@@ -37,20 +37,26 @@ def main():
 
     # 1, 2, 3
     occurrences = {}
-    for word in doc:
-        if word.pos_ is "PUNCT":
-            continue
-
+    def fill_occurrences(word):
         word_lemma = lemma(word)
         count = occurrences.get(word_lemma, 0)
         count += 1
         occurrences[word_lemma] = count
+
+    each_word(doc, fill_occurrences)
 
     # 4, 5, 6
     ranked = get_ranked(doc.sents, sentence_count, occurrences)
 
     # 7
     print " ".join([x['sentence'].text for x in ranked])
+
+def each_word(words, func):
+    for word in words:
+        if word.pos_ is "PUNCT":
+            continue
+
+        func(word)
 
 def get_ranked(sentences, sentence_count, occurrences):
     # Maintain ranked sentences for easy output
@@ -59,11 +65,11 @@ def get_ranked(sentences, sentence_count, occurrences):
     # Maintain the lowest score for easy removal
     lowest_score = -1
     lowest = 0
+
     for sent in sentences:
         # Fill ranked if not at capacity
         if len(ranked) < sentence_count:
             score = get_score(occurrences, sent)
-
 
             # Maintain lowest score
             if score < lowest_score or lowest_score is -1:
@@ -96,11 +102,20 @@ def lemma(word):
     return word.lemma_
 
 def get_score(occurrences, sentence):
-    total = 0
-    for word in sentence:
-        total += occurrences.get(lemma(word), 0)
+    class Totaler:
+        def __init__(self):
+            self.score = 0
+        def __call__(self, word):
+            self.score += occurrences.get(lemma(word), 0)
+        def total(self):
+            # Should the score be divided by total words?
+            return self.score
 
-    return total
+    totaler = Totaler()
+
+    each_word(sentence, totaler)
+
+    return totaler.total()
 
 if __name__ == "__main__":
     main()

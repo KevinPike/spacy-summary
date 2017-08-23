@@ -1,10 +1,10 @@
-# spacy-smmry
+# spacy-summary
 
-This is an implementation of [SMMRY](http://smmry.com/about) using [spacy.io](https://spacy.io/).
+A work-in-progress test summarizer that uses [spacy.io](https://spacy.io/).
 
 ## Usage
 
-To get started with `spacy-smmry`, install the dependencies:
+To get started, install the dependencies:
 
 ```bash
 # A virtualenv is recommended
@@ -21,3 +21,7 @@ The program takes the text file to summarize and the number of sentences to incl
 # Reads and summarizes document.txt in 3 sentences
 python main.py document.txt 3
 ```
+
+## TODO
+
+- [ ] Improve score function
