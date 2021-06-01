@@ -21,7 +21,7 @@ thinc==6.5.2
 toolz==0.8.2
 tqdm==4.15.0
 ujson==1.35
-urllib3==1.22
+urllib3==1.26.5
 wcwidth==0.1.7
 webencodings==0.5.1
 wrapt==1.10.11
